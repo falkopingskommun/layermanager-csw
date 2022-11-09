@@ -126,7 +126,12 @@ const Layermanager = function Layermanager(options = {}) {
       let sharemap = viewer.getControlByName('sharemap');
       sharemap.addParamsToGetMapState(name, addAddedLayersToMapState);
       let sharedLayers = viewer.getUrlParams()[name]; 
-      if(sharedLayers) ReadAddedLayersFromMapState(sharedLayers, viewer);
+      if(sharedLayers) {
+        ReadAddedLayersFromMapState(sharedLayers, viewer);
+        if (viewer.getControlByName('legend').getState().visibleLayersViewActive) {
+          viewer.getControlByName('legend').setVisibleLayersViewActive(true);
+        }
+      }
     },
     getActiveFilters(){
       return filterMenu.getActiveFilters()

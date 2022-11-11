@@ -1,11 +1,10 @@
 const { merge } = require('webpack-merge');
-const WriteFilePlugin = require('write-file-webpack-plugin');
 const common = require('./webpack.common.js');
 
 
 module.exports = merge(common, {
   output: {
-    path: `${__dirname}/../../origo/build/plugins/`,
+    path: `${__dirname}/../../origo/plugins/`,
     publicPath: '/build/js',
     filename: 'layermanager.js',
     libraryTarget: 'var',
@@ -13,6 +12,7 @@ module.exports = merge(common, {
     library: 'Layermanager'
   },
   mode: 'development',
+  devtool: 'source-map',
   module: {
     rules: [
       {
@@ -23,19 +23,25 @@ module.exports = merge(common, {
           },            
           {
             loader: "css-loader"
-          },          
+          },
           {
-            loader: "sass-loader"     
+            loader: "sass-loader"
           }
         ]
       }      
     ]
   },  
-  plugins: [
-    new WriteFilePlugin()
-  ],  
+ 
   devServer: {
-    contentBase: './',
-    port: 9008
+    static: './',
+    port: 9008,
+    devMiddleware: {
+      //index: true,
+      //mimeTypes: { 'text/html': ['phtml'] },
+      //publicPath: '/publicPathForDevServe',
+      //serverSideRender: true,
+      writeToDisk: true
+    },
+    
   }
 });

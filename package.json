@@ -4,10 +4,10 @@
   "description": "",
   "main": "k3-comp.js",
   "scripts": {
-    "start": "npm run prebuild-sass | run-p watch-js watch-sass",
+    "start": "npm-run-all --parallel watch-js watch-sass",
     "watch-js": "webpack-dev-server --config ./tasks/webpack.dev.js --mode development",
-    "watch-sass": "node-sass -w --include-path scss scss/layermanager.scss ../origo/build/plugins/layermanager.css",
-    "prebuild-sass": "node-sass --include-path scss scss/layermanager.scss ../origo/build/plugins/layermanager.css",
+    "watch-sass": "node-sass -w --include-path scss scss/layermanager.scss ../origo/plugins/layermanager.css",
+    "prewatch-sass": "node-sass --include-path scss scss/layermanager.scss ../origo/plugins/layermanager.css",
     "build": "webpack --config ./tasks/webpack.prod.js && npm run build-sass",
     "build-sass": "node-sass --include-path scss scss/layermanager.scss build/css/layermanager.css",
     "test": "echo \"Error: no test specified\" && exit 1"

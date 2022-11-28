@@ -123,7 +123,9 @@ const LayerAdder = function LayerAdder(options = {}) {
       }
 
       if (legendJson) {
-        styleProperty = `${srcUrl}?service=WMS&version=1.1.0&request=GetLegendGraphic&layer=${layerId}&FORMAT=image/png&scale=401`;
+        let vendorParam = ''
+        if (!theme) vendorParam = '&legend_options=dpi:300';
+        styleProperty = `${srcUrl}?service=WMS&version=1.1.0&request=GetLegendGraphic&layer=${layerId}&FORMAT=image/png&scale=401${vendorParam}`;
       } else {
         styleProperty = noLegendIcon;
       }

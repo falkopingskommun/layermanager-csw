@@ -97,7 +97,7 @@ const Layermanager = function Layermanager(options = {}) {
       viewer.on('active:layermanager', setActive.bind(this));
       viewer.addGroup(group)
       InitDragAndDrop(group);
-      viewer.on("add:layer", (l) => {
+      viewer.on("addlayer", (l) => {
         let addedLayer = viewer.getLayer(l.layerName); 
         if(addedLayer.get('group') == group.name) onAddDraggable(addedLayer);
       });

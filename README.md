@@ -45,6 +45,7 @@ The plugin can be loaded like this in an html-file:
                         expanded: true,
                         position: "bottom"
                     },
+                    noAbstractInfo: "Ingen information",
                     noSearchResultText: "No results found",
                     url: "URL to CSW-service",
                     sourceFields: {

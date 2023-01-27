@@ -13,7 +13,8 @@ const layerRequester = async function layerRequester({
   searchText = '',
   startRecord = 1,
   extend = false,
-  themes = []
+  themes = [],
+  noAbstractInfo = ''
 }  = {}) {
 
   function parseThemes(){
@@ -111,7 +112,7 @@ const layerRequester = async function layerRequester({
         }
         
         title = title ? title.nodeValue : "no title"
-        description = description ? description.nodeValue : "no description"
+        description = description ? description.nodeValue : noAbstractInfo
         layers.push({
           layerId,
           title,

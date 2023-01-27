@@ -11,6 +11,7 @@ const LayerList = function LayerList(options = {}) {
     viewer,
     noSearchResultText = 'No results..',
     noLegendIcon = 'img/png/raster.png',
+    noAbstractInfo,
     layersDefaultProps
   } = options;
 
@@ -106,6 +107,7 @@ const LayerList = function LayerList(options = {}) {
       layerRequester({ //new request with searchstring
         searchText : searchText, 
         themes : filters,
+        noAbstractInfo,
         url
       }); 
       scrollPos = document.getElementById(this.getId()).scrollTop 
@@ -125,6 +127,7 @@ const LayerList = function LayerList(options = {}) {
           let filters = viewer.getControlByName('layermanager').getActiveFilters()
           layerRequester({
             searchText,
+            noAbstractInfo,
             themes : filters, 
             startRecord: this.getComponents().length+1, 
             extend : true,

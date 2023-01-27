@@ -20,11 +20,12 @@ const Layermanager = function Layermanager(options = {}) {
     group,
     layersDefaultProps,
     noSearchResultText,
+    noAbstractInfo,
     noLegendIcon,
     types,
     addLayerErrorMsg
   } = options;
- 
+
   const cls = `${clsSettings} flex fade-in box center-center padding-y-small padding-left layer-manager overflow-hidden`.trim();
 
   let filterMenu;
@@ -107,13 +108,14 @@ const Layermanager = function Layermanager(options = {}) {
       });
       let legend = viewer.getControlByName('legend');
       legend.addButtonToTools(openBtn)
-      main = Main({ 
+      main = Main({
         viewer,
         sourceFields,
         sourceUrl,
         url,
         layersDefaultProps,
         noSearchResultText,
+        noAbstractInfo,
         noLegendIcon
       });
       filterMenu = FilterMenu({types});

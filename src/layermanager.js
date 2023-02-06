@@ -143,7 +143,7 @@ const Layermanager = function Layermanager(options = {}) {
     },
     onRender() {
       LayerListStore.clear();
-      layerRequester({ url, searchText });
+      layerRequester({ url, searchText, noAbstractInfo });
       document.getElementById(backDropId).addEventListener('click', ()=>{closeButton.dispatch('click');});
       window.addEventListener('keyup', checkESC,{once:true});
     },

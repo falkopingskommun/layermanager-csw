@@ -120,12 +120,14 @@ const LayerList = function LayerList(options = {}) {
       this.dispatch('render'); 
       //After rendering and updating is done, set the scroll event
       const currentEl = document.getElementById(this.getId())
-      currentEl.addEventListener('scroll', () => {
-        if(currentEl.scrollTop == currentEl.scrollHeight - currentEl.offsetHeight){
-          scrollPos = currentEl.scrollHeight - currentEl.offsetHeight
-          let searchText = currentEl.parentNode.getElementsByTagName("input")[0].value
-          let filters = viewer.getControlByName('layermanager').getActiveFilters()
-          layerRequester({
+      let ready = true;
+      currentEl.addEventListener('scroll', async () => {
+        if ((currentEl.scrollTop > 0) && (Math.ceil(currentEl.scrollTop + currentEl.clientHeight) >= currentEl.scrollHeight) && ready) {
+          ready = false;
+          scrollPos = currentEl.scrollHeight - currentEl.offsetHeight;
+          let searchText = currentEl.parentNode.getElementsByTagName("input")[0].value;
+          let filters = viewer.getControlByName('layermanager').getActiveFilters();
+          await layerRequester({
             searchText,
             noAbstractInfo,
             themes : filters, 
@@ -133,9 +135,10 @@ const LayerList = function LayerList(options = {}) {
             extend : true,
             url
           })
+          ready = true;
         } 
       })
-      currentEl.scrollTop = scrollPos
+      currentEl.scrollTop = scrollPos;
     }
   });
 };

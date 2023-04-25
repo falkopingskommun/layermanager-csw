@@ -36,6 +36,7 @@ const layerItem = function layerItem(options = {}) {
   })
   const collapse = Origo.ui.Collapse({
     cls: 'bottom-fader',
+    bubble: true,
     headerComponent,
     contentComponent,
     collapseX: false,
@@ -60,16 +61,15 @@ const layerItem = function layerItem(options = {}) {
     },
     onRender() {
       const collapseEl = document.getElementById(collapse.getId());
-      const bodyClick = document.getElementsByTagName("body")[0];
-      bodyClick.addEventListener('click', () => {
+      document.getElementById(this.getId()).addEventListener('collapse:toggle', () => {
         if (collapseEl != null) {
-          if (collapseEl.classList.contains("expanded")) {
+          if (collapseEl.classList.contains('expanded')) {
             collapseEl.classList.remove('bottom-fader');
-          } else if (!collapseEl.classList.contains("expanded")) {
+          } else if (!collapseEl.classList.contains('expanded')) {
             collapseEl.classList.add('bottom-fader');
           }
         }
-      });
+      })
       this.dispatch('render');
     },
     render() {

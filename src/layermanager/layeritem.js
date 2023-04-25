@@ -31,11 +31,11 @@ const layerItem = function layerItem(options = {}) {
   const contentComponent = Origo.ui.Element({
     tagName: 'p',
     innerHTML: `${data[description.name]}`,
-    cls: "text-grey text-smaller text-height-smaller text-fade",
+    cls: "text-grey text-smaller text-height-smaller",
     style: {"word-break":"break-word"}
   })
   const collapse = Origo.ui.Collapse({
-    cls: '',
+    cls: 'bottom-fader',
     headerComponent,
     contentComponent,
     collapseX: false,
@@ -59,15 +59,26 @@ const layerItem = function layerItem(options = {}) {
       this.addComponent(layerAdder);
     },
     onRender() {
+      const collapseEl = document.getElementById(collapse.getId());
+      const bodyClick = document.getElementsByTagName("body")[0];
+      bodyClick.addEventListener('click', () => {
+        if (collapseEl != null) {
+          if (collapseEl.classList.contains("expanded")) {
+            collapseEl.classList.remove('bottom-fader');
+          } else if (!collapseEl.classList.contains("expanded")) {
+            collapseEl.classList.add('bottom-fader');
+          }
+        }
+      });
       this.dispatch('render');
     },
     render() {
       let textElements = `<div class="text-black text-grey-dark text-normal text-weight-bold">${data[title.name]}</div>
-                          <p class="relative text-grey text-smaller text-height-smaller overflow-hidden">${data[description.name]}</p>`
-      if (data[description.name].length > 166){
+                          <p class="relative text-grey text-smaller text-height-smaller overflow-hidden">${data[description.name]}</p>`                          
+      if (data[description.name].length > 280){
         this.addComponent(collapse);
         textElements = `${collapse.render()}`;
-      }
+          }
       return `<li id="${this.getId()}" class="${cls}" style="${style}">
               <div class="flex row">
                   <div class="grow">

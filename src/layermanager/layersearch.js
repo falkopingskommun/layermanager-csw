@@ -72,6 +72,7 @@ const LayerSearch = function LayerSearch(options = {}) {
         state: `${isItActive}`,
         tooltipText: 'Visar enbart tilläggbara lager',
         tooltipPlacement: 'west',
+        title: 'Visa enbart tilläggbara lager',
         icon: '#ic_add_notes_24px',
         data: { title: 'Tilläggbara lager' }
       });

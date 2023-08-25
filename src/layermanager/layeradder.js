@@ -69,7 +69,7 @@ const LayerAdder = function LayerAdder(options = {}) {
   const inactive = function inactive() {
     this.setIcon(mapIcon);
     const el = document.getElementById(this.getId());
-    el.children[0].children[0].children[0].innerHTML = 'Finns i kartan';
+    el.querySelector('svg title').innerHTML = 'Finns i kartan';
     el.classList.remove('primary');
     el.classList.add('grey');
   };

@@ -12,12 +12,13 @@ const layerRequester = async function layerRequester({
   themes = []
 } = {}) {
   function parseThemes() {
+     // FM - Ändrat till dc:description istället för dc:subject och lagt på lla: innan thisTheme
     let activeThemes = '';
     themes.forEach(theme => {
       const thisTheme = `${theme}`.replace(/ /g, '_');
       activeThemes += `<ogc:PropertyIsLike matchCase="false" wildCard="%" singleChar="_" escapeChar="\">
-          <ogc:PropertyName>dc:subject</ogc:PropertyName>
-          <ogc:Literal>%${thisTheme}%</ogc:Literal>
+      <ogc:PropertyName>dc:description</ogc:PropertyName>
+      <ogc:Literal>%lla: ${thisTheme}%</ogc:Literal>
         </ogc:PropertyIsLike>`;
     });
     return activeThemes;
@@ -30,10 +31,23 @@ const layerRequester = async function layerRequester({
       filter += '<ogc:And>';
       themesActive = true;
     }
-    filter += `<ogc:PropertyIsLike matchCase="false" wildCard="%" singleChar="_" escapeChar="\">
+    // FM - Ändrat filter parameter tar nu endast med geoserver lager med gdp i namnet
+    filter += `<ogc:And>
+                <ogc:PropertyIsLike matchCase="false" wildCard="%" singleChar="_" escapeChar="\">
                 <ogc:PropertyName>dc:title</ogc:PropertyName>
                 <ogc:Literal>%${searchText}%</ogc:Literal>
-              </ogc:PropertyIsLike>`;
+              </ogc:PropertyIsLike>
+              <ogc:Or>
+              <ogc:PropertyIsLike matchCase="false" wildCard="%" singleChar="_" escapeChar="\">
+              <ogc:PropertyName>dc:identifier</ogc:PropertyName>
+              <ogc:Literal>%gdp%</ogc:Literal>
+            </ogc:PropertyIsLike>
+            <ogc:PropertyIsLike matchCase="false" wildCard="%" singleChar="_" escapeChar="\">
+            <ogc:PropertyName>dc:identifier</ogc:PropertyName>
+            <ogc:Literal>%gdpk%</ogc:Literal>
+          </ogc:PropertyIsLike>
+          </ogc:Or>
+          </ogc:And>`;
     if (themesActive) {
       filter += (themes.length === 1) ? `${parseThemes()}</ogc:And>` : `<ogc:Or>${parseThemes()}</ogc:Or></ogc:And>`;
     }

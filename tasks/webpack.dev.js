@@ -34,7 +34,7 @@ module.exports = merge(common, {
  
   devServer: {
     static: './',
-    port: 9008,
+    port: 9005, // KDM
     devMiddleware: {
       //index: true,
       //mimeTypes: { 'text/html': ['phtml'] },

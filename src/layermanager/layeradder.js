@@ -17,8 +17,8 @@ const LayerAdder = function LayerAdder(options = {}) {
     noLegendIcon
   } = options;
 
-  const layer = viewer.getLayer(layerId);
-  const group = viewer.getGroup(layerId);
+  const layer = viewer.getLayer(layerId.split(':').pop()); // KDM
+  const group = viewer.getGroup(layerId.split(':').pop()); // KDM
   const initialState = layer || group ? 'inactive' : 'initial';
   const initialIcon = initialState === 'initial' ? addIcon : mapIcon;
   const initialBgCls = initialState === 'initial' ? 'primary' : 'grey';

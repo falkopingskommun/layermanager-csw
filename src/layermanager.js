@@ -1,5 +1,4 @@
 import 'Origo';
-import swal from 'sweetalert';
 import FilterMenu from './layermanager/filtermenu';
 import LayerListStore from './layermanager/layerliststore';
 import Main from './layermanager/main';
@@ -8,9 +7,6 @@ import { onAddDraggable, onRemoveDraggable, InitDragAndDrop } from './layermanag
 import { GetAddedLayers, ReadAddedLayersFromMapState } from './layermanager/mapstatelayers';
 
 const Layermanager = function Layermanager(options = {}) {
-  const {
-    target
-  } = options;
   const {
     cls: clsSettings = 'control width-52',
     sourceFields,
@@ -79,7 +75,7 @@ const Layermanager = function Layermanager(options = {}) {
   };
 
   function checkESC(e) {
-    if (e.keyCode == 27) {
+    if (e.keyCode === 27) {
       closeButton.dispatch('click');
     }
   }
@@ -96,15 +92,19 @@ const Layermanager = function Layermanager(options = {}) {
     onAdd(e) {
       viewer = e.target;
       viewer.on('active:layermanager', setActive.bind(this));
-      viewer.addGroup(group);
+      if (!viewer.getGroup(group.name)) {
+        viewer.addGroup(group);
+      }
       InitDragAndDrop(group);
       viewer.on('addlayer', (l) => {
-        const addedLayer = viewer.getLayer(l.layerName);
-        if (addedLayer.get('group') == group.name) onAddDraggable(addedLayer);
+        if (l && l.layerName && (typeof l.layerName === 'string' || l.layerName instanceof String)) {
+          const addedLayer = viewer.getLayer(l.layerName.split(':').pop());
+          if (addedLayer.get('group') === group.name) onAddDraggable(addedLayer);
+        }
       });
-      viewer.getMap().getLayers().on('remove', (e) => {
-        const removedLayer = e.element;
-        if (removedLayer.get('group') == group.name) onRemoveDraggable(removedLayer);
+      viewer.getMap().getLayers().on('remove', (ev) => {
+        const removedLayer = ev.element;
+        if (removedLayer.get('group') === group.name) onRemoveDraggable(removedLayer);
       });
       const legend = viewer.getControlByName('legend');
       legend.addButtonToTools(openBtn);
@@ -129,12 +129,7 @@ const Layermanager = function Layermanager(options = {}) {
       const sharemap = viewer.getControlByName('sharemap');
       sharemap.addParamsToGetMapState(name, addAddedLayersToMapState);
       const sharedLayers = viewer.getUrlParams()[name];
-      if (sharedLayers) {
-        ReadAddedLayersFromMapState(sharedLayers, viewer);
-        if (viewer.getControlByName('legend').getState().visibleLayersViewActive) {
-          viewer.getControlByName('legend').setVisibleLayersViewActive(true);
-        }
-      }
+      if (sharedLayers) ReadAddedLayersFromMapState(sharedLayers, viewer);
     },
     getActiveFilters() {
       return filterMenu.getActiveFilters();
@@ -153,8 +148,8 @@ const Layermanager = function Layermanager(options = {}) {
       const template = `
       <div id=${backDropId} style="width: 100%;height: 100%;background: #00000080;z-index: 51;">
       </div>
-      <div id="${this.getId()}" class="${cls}" style="height: 700px; z-index: 52;" >      
-          <div class="relative padding-y flex overflow-hidden width-100" ">
+      <div id="${this.getId()}" class="${cls}" style="height: 700px; z-index: 52;" >
+          <div class="relative padding-y flex overflow-hidden width-100" style="flex-direction:column">
             <div class="flex row width-100 overflow-hidden filter-main-container">
               ${filterMenu.render()}
               ${main.render()}
@@ -169,9 +164,5 @@ const Layermanager = function Layermanager(options = {}) {
     }
   });
 };
-
-// if (window.Origo) {
-//  Origo.controls.Layermanager = Layermanager;
-// }
 
 export default Layermanager;

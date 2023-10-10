@@ -112,9 +112,9 @@ const layerRequester = async function layerRequester({
     let layers = [];
     for (let i = 0; i < records.length; i++) {
       // let correctUri =  records[i].querySelector(`[protocol='OGC:WMS-1.1.1-http-get-map']`)
-      const correctUri = records[i].querySelector('[scheme=\'OGC:WMS\']');
+      const correctUri = records[i].querySelector('[scheme=\'OGC:WMS\']'); // KDM
       // let layerId = correctUri ? correctUri.getAttribute('name') : "No id"
-      let layerId = records[i].getElementsByTagName('dc:identifier')[0].childNodes[0];
+      let layerId = records[i].getElementsByTagName('dc:identifier')[0].childNodes[0]; // KDM
       let title = records[i].getElementsByTagName('dc:title')[0].childNodes[0];
       let description = records[i].getElementsByTagName('dc:description')[0].childNodes[0];
       const theme = 'no theme';
@@ -127,9 +127,9 @@ const layerRequester = async function layerRequester({
         }
       }
 
-      layerId = layerId ? layerId.nodeValue : 'no id';
+      layerId = layerId ? layerId.nodeValue : 'no id'; // KDM
       title = title ? title.nodeValue : 'no title';
-      description = description ? description.nodeValue : 'no description';
+      description = description ? description.nodeValue : 'no description'; // KDM
       layers.push({
         layerId,
         title,

@@ -92,18 +92,18 @@ const Layermanager = function Layermanager(options = {}) {
     onAdd(e) {
       viewer = e.target;
       viewer.on('active:layermanager', setActive.bind(this));
-      if (!viewer.getGroup(group.name)) {
+      if (!viewer.getGroup(group.name)) { // KDM
         viewer.addGroup(group);
       }
       InitDragAndDrop(group);
       viewer.on('addlayer', (l) => {
-        if (l && l.layerName && (typeof l.layerName === 'string' || l.layerName instanceof String)) {
-          const addedLayer = viewer.getLayer(l.layerName.split(':').pop());
+        if (l && l.layerName && (typeof l.layerName === 'string' || l.layerName instanceof String)) { // KDM
+          const addedLayer = viewer.getLayer(l.layerName.split(':').pop()); // KDM
           if (addedLayer.get('group') === group.name) onAddDraggable(addedLayer);
         }
       });
-      viewer.getMap().getLayers().on('remove', (ev) => {
-        const removedLayer = ev.element;
+      viewer.getMap().getLayers().on('remove', (ev) => { //KDM
+        const removedLayer = ev.element; //KDM
         if (removedLayer.get('group') === group.name) onRemoveDraggable(removedLayer);
       });
       const legend = viewer.getControlByName('legend');
@@ -129,7 +129,7 @@ const Layermanager = function Layermanager(options = {}) {
       const sharemap = viewer.getControlByName('sharemap');
       sharemap.addParamsToGetMapState(name, addAddedLayersToMapState);
       const sharedLayers = viewer.getUrlParams()[name];
-      if (sharedLayers) ReadAddedLayersFromMapState(sharedLayers, viewer);
+      if (sharedLayers) ReadAddedLayersFromMapState(sharedLayers, viewer); // KDM
     },
     getActiveFilters() {
       return filterMenu.getActiveFilters();

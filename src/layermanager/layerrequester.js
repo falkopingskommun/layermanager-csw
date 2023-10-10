@@ -1,5 +1,6 @@
 import LayerListStore from './layerliststore';
 import readAsync from './readasync';
+import 'Origo'; // FM
 
 const requestAll = () => data;
 
@@ -11,8 +12,10 @@ const layerRequester = async function layerRequester({
   extend = false,
   themes = []
 } = {}) {
+  let legend_layers = ''; // FM
+
   function parseThemes() {
-     // FM - Ändrat till dc:description istället för dc:subject och lagt på lla: innan thisTheme
+    // FM - Ändrat till dc:description istället för dc:subject och lagt på lla: innan thisTheme
     let activeThemes = '';
     themes.forEach(theme => {
       const thisTheme = `${theme}`.replace(/ /g, '_');
@@ -25,6 +28,7 @@ const layerRequester = async function layerRequester({
   }
 
   function buildFilter() {
+    
     let filter = '<ogc:Filter>';
     let themesActive = false;
     if (themes.length !== 0) {
@@ -88,8 +92,9 @@ const layerRequester = async function layerRequester({
   const { error, data } = await readAsync(fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/xml' },
-    body }).then((rsp) => rsp.text()));
-    // const { error, data } = await readAsync(fetch(url).then(response => response.json()));
+    body
+  }).then((rsp) => rsp.text()));
+  // const { error, data } = await readAsync(fetch(url).then(response => response.json()));
   if (error) {
     console.log(error);
   } else {
@@ -133,6 +138,26 @@ const layerRequester = async function layerRequester({
         src
       });
     }
+
+    // FMB
+    //let layer_checker = document.getElementById('layer_checker') // FM Layer checker button 
+    if (layer_checker.checked) {
+      legend_layers = 'yes'
+    }
+    else {
+      legend_layers = 'no'
+    }
+    layers.forEach((el) => {
+      {
+        let curr_layer = origo.api().getLayer(el.layerId.split(':').pop());
+        const initialState = curr_layer ? 'inactive' : 'initial';
+        if (initialState == 'inactive' && legend_layers == 'no') {
+          layers = layers.filter(x => x.layerId !== el.layerId)
+        }
+      }
+    })
+    // FMS
+
     // if to extend current list, used for "load more on scroll"-effect
     if (extend) { layers = LayerListStore.getList().concat(layers); }
     LayerListStore.updateList(layers);

@@ -115,7 +115,7 @@ const LayerAdder = function LayerAdder(options = {}) {
       // not an ArcGIS Server WMS layer, assume Geoserver
         if (src[src.length - 1] === '?') srcUrl = src.substring(0, src.length - 1); // some extra '?' from request breaks the url
         //const legendUrl = `${src}service=WMS&version=1.1.0&request=GetLegendGraphic&layer=${layerId}&format=application/json&scale=401`;
-        const legendUrl = `${baseUrlLegend}/${schema}/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=application/json&scale=401&layer=${layerId}`; // FM+
+        const legendUrl = `${baseUrlLegend}/${schema}/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=application/json&scale=401&layer=${layerId}&legend_options=dpi:512`; // FM+
         const legendResult = await fetch(legendUrl);
 
         try {
@@ -138,7 +138,7 @@ const LayerAdder = function LayerAdder(options = {}) {
         let vendorParam = '';
         if (!theme) vendorParam = '&legend_options=dpi:300';
         //styleProperty = `${srcUrl}?service=WMS&version=1.1.0&request=GetLegendGraphic&layer=${layerId}&FORMAT=image/png&scale=401${vendorParam}`;
-        styleProperty = `${baseUrlLegend}/${schema}/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image/png&scale=401&layer=${layerId}`; // FM+
+        styleProperty = `${baseUrlLegend}/${schema}/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image/png&scale=401&layer=${layerId}&legend_options=dpi:512`; // FM+
       } else {
         styleProperty = noLegendIcon;
       }
